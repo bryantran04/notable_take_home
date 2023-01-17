@@ -1,6 +1,6 @@
 from init import create_app
 from flask_migrate import Migrate
-from flask import abort, jsonify, request
+from flask import jsonify, request
 
 
 from models import AppointmentType, Doctor, Patient, Appointment, db
@@ -106,6 +106,9 @@ def validate_appointment(patient_id, doctor_id, date_time_obj, kind):
     if len(appointments) >= 3:
         raise Exception("Doctor has 3 appointments at that time")
 
+    if kind not in [appointment_type.value for appointment_type in AppointmentType]:
+        raise Exception("Invalid Appointment Type")
+
 
 @app.route("/appointment", methods=["POST"])
 def create_appointment():
@@ -115,7 +118,7 @@ def create_appointment():
         patient_id = int(request.json["patient_id"])
         doctor_id = int(request.json["doctor_id"])
         appointment_datetime = request.json["appointment_datetime"]
-        kind = request.json["kind"]
+        kind = request.json["kind"].upper()
 
         date_time_obj = datetime.strptime(appointment_datetime, "%m/%d/%y %H:%M:%S")
 

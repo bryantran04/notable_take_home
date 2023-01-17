@@ -6,8 +6,8 @@ services:
     image: postgres:12.11
     restart: always
     environment:
-      POSTGRES_PASSWORD: pwd # environment variable that sets the superuser password for PostgreSQL
-      POSTGRES_USER: usr # variable that will create the specified user with superuser power and a database with the same name
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_USER: usr
       POSTGRES_DB: medical
     volumes:
       - medical-vol:/var/lib/postgresql/data

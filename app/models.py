@@ -5,8 +5,8 @@ db = SQLAlchemy()
 
 
 class AppointmentType(enum.Enum):
-    NEW_PATIENT = "New Patient"
-    FOLLOW_UP = "Follow-up"
+    NEW_PATIENT = "NEW_PATIENT"
+    FOLLOW_UP = "FOLLOW_UP"
 
 
 class Doctor(db.Model):
