@@ -52,4 +52,10 @@ lask db upgrade
 
 - GET /doctor/<doctor_id>/appointments
 
+- GET /doctor/<doctor_id>/appointments/<date> #09-20-2022
+
+```
+localhost/doctor/1/appointments/09-20-2022
+```
+
 - DELETE appointments/<appointment_id>

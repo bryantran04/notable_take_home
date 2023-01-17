@@ -4,7 +4,7 @@ from flask import jsonify, request
 
 
 from models import AppointmentType, Doctor, Patient, Appointment, db
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 app = create_app()
@@ -152,6 +152,35 @@ def create_appointment():
 @app.route("/doctor/<doctor_id>/appointments/", methods=["GET"])
 def get_appointments(doctor_id):
     appointments = Appointment.query.filter_by(doctor_id=doctor_id).all()
+    response_body = {}
+    response_body["appointments"] = []
+
+    for appointment in appointments:
+        patient = Patient.query.filter_by(patient_id=appointment.patient_id).first()
+        response_body["appointments"].append(
+            {
+                "patient_first_name": patient.first_name,
+                "patient_last_name": patient.last_name,
+                "time": appointment.appointment_datetime,
+                "appointment_id": appointment.appointment_id,
+                "kind": appointment.kind.value,
+            }
+        )
+
+    return jsonify(response_body)
+
+
+@app.route("/doctor/<doctor_id>/appointments/<date>", methods=["GET"])
+def get_appointments_for_date(doctor_id, date):
+    date = datetime.strptime(date, "%m-%d-%Y")
+    filter_after = date + timedelta(days=1)
+
+    appointments = Appointment.query.filter(
+        Appointment.doctor_id == doctor_id,
+        date <= Appointment.appointment_datetime,
+        Appointment.appointment_datetime < filter_after,
+    ).all()
+
     response_body = {}
     response_body["appointments"] = []
 
