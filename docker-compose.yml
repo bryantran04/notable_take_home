@@ -1,0 +1,26 @@
+volumes:
+  medical-vol:
+
+services:
+  pgsql:
+    image: postgres:12.11
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pwd # environment variable that sets the superuser password for PostgreSQL
+      POSTGRES_USER: usr # variable that will create the specified user with superuser power and a database with the same name
+      POSTGRES_DB: medical
+    volumes:
+      - medical-vol:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  python:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      - pgsql
+    ports:
+      - 80:5000
+    volumes:
+      - ./app:/usr/src/app
