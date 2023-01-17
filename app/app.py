@@ -19,7 +19,6 @@ def index():
 
 @app.route("/doctor", methods=["POST"])
 def create_doctor():
-
     response_body = {}
     error = False
     try:
@@ -147,7 +146,7 @@ def create_appointment():
             return jsonify(response_body)
 
 
-@app.route("/appointments/<doctor_id>", methods=["GET"])
+@app.route("/doctor/<doctor_id>/appointments/", methods=["GET"])
 def get_appointments(doctor_id):
     appointments = Appointment.query.filter_by(doctor_id=doctor_id).all()
     response_body = {}
