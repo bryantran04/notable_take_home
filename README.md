@@ -11,7 +11,7 @@ docker-compose up
 ```
 flask db init
 flask db migrate
-lask db upgrade
+flask db upgrade
 ```
 
 ### Step 3: Hit endpoints at localhost
